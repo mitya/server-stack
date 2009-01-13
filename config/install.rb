@@ -1,11 +1,12 @@
 # Require our stack
-%w(essential server scm ruby ruby_enterprise mysql memcached).each do |r|
+%w(essential server scm ruby ruby_enterprise mysql postgres memcached).each do |r|
   require File.join(File.dirname(__FILE__), "stack", r)
 end
 
 policy :ffolio, :roles => :app do
   requires :appserver
-  requires :database
+  requires :build_essential
+  requires :postgres
   requires :webserver
   requires :scm 
   requires :memcached
