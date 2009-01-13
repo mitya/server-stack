@@ -1,0 +1,8 @@
+SPRINKLE_CONFIGS_DIR=/users/dima/code/passenger-stack/config
+
+cat <<-DEPLOY > $SPRINKLE_CONFIGS_DIR/deploy.rb
+  set :user, "root"
+  set :ssh_options, {:keys => ["#{ENV["HOME"]}/.ssh/id_demo"]}
+  server '$1', :web, :app, :db, :primary => true
+DEPLOY
+sprinkle -v -s $SPRINKLE_CONFIGS_DIR/install.rb
