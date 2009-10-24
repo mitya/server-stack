@@ -7,9 +7,13 @@ package :mysql, :provides => :database do
   end
 end
  
-package :mysql_driver do
+package :mysql_driver, :provides => :ruby_database_driver do
   description 'Ruby MySQL database driver'
   gem 'mysql'
   
-  requires :ruby
+  verify do
+    has_gem 'mysql'
+  end
+  
+  requires :mysql, :ruby_enterprise
 end
