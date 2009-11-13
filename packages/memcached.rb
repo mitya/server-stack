@@ -1,5 +1,6 @@
 package :memcached_daemon, :provides => :memcached do
   description 'Memcached, a distributed memory object store'
+
   apt %w( memcached )
   
   post :install, "/etc/init.d/memcached start"

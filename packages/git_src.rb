@@ -1,12 +1,10 @@
-package :git, :provides => :scm do
+package :git_src, :provides => :scm do
   description 'Git Distributed Version Control'
-  version '1.6.1'
+  version '1.6.5'
+
   source "http://kernel.org/pub/software/scm/git/git-#{version}.tar.gz"
-  requires :git_dependencies
-  
-  verify do
-    has_file '/usr/local/bin/git'
-  end
+
+  verify { has_executable 'git' }
 end
 
 package :git_dependencies do

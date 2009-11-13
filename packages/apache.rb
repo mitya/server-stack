@@ -18,7 +18,10 @@ end
 
 package :passenger, :provides => :appserver do
   description 'Phusion Passenger (mod_rails)'
-  version '2.2.4'
+  gems_home = "/usr/local/lib/ruby/gems/1.8/gems"
+  # gems_home = "/usr/local/ruby-enterprise/lib/ruby/gems/1.8/gems"
+  version '2.2.5'
+  
   gem 'passenger' do
     post :install, 'echo -en "\n\n\n\n" | sudo passenger-install-apache2-module'
 
@@ -27,8 +30,8 @@ package :passenger, :provides => :appserver do
     post :install, 'touch /etc/apache2/extras/passenger.conf'
     post :install, 'echo "Include /etc/apache2/extras/passenger.conf"|sudo tee -a /etc/apache2/apache2.conf'
 
-    [%Q(LoadModule passenger_module /usr/local/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-#{version}/ext/apache2/mod_passenger.so),
-    %Q(PassengerRoot /usr/local/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-#{version}),
+    [%Q(LoadModule passenger_module #{gems_home}/passenger-#{version}/ext/apache2/mod_passenger.so),
+    %Q(PassengerRoot #{gems_home}/passenger-#{version}),
     %q(PassengerRuby /usr/local/bin/ruby),
     %q(RailsEnv production)].each do |line|
       post :install, "echo '#{line}' |sudo tee -a /etc/apache2/extras/passenger.conf"
@@ -40,11 +43,11 @@ package :passenger, :provides => :appserver do
 
   verify do
     has_file "/etc/apache2/extras/passenger.conf"
-    has_file "/usr/local/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-#{version}/ext/apache2/mod_passenger.so"
-    has_directory "/usr/local/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-#{version}"
+    has_file "#{gems_home}/passenger-#{version}/ext/apache2/mod_passenger.so"
+    has_directory "#{gems_home}/passenger-#{version}"
   end
 
-  requires :apache, :apache2_prefork_dev, :ruby_enterprise
+  requires :apache, :apache2_prefork_dev, :ruby
 end
 
 # These "installers" are strictly optional, I believe
